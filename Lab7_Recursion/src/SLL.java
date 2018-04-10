@@ -39,7 +39,7 @@ public class SLL<E> {
 
 public void reverse() { 
    if (size > 1) 
-      first = recReverse(first,first); 
+	   first = recReverse(first).getFirst();
 } 
 
 private Node<E> recReverse(Node<E> b, Node<E> c) { 
@@ -50,22 +50,23 @@ private Node<E> recReverse(Node<E> b, Node<E> c) {
     c.setNext(b);
     return recReverse(c, a);
 }
-private Pair<E> recReverse(Node<E> first) { 
+private Pair<Node<E>> recReverse(Node<E> first) { 
 	// returns a pair (fr, lr), where fr is the first node
 		//in that resulting reversed linked list 
 		//and lr is the last node in that reversed linked list.
-		
-    if  (first==null) return null;
-    //rF=First of the reverse list.
-    Pair<E> rF =recReverse(first.getNext());
-   // addLast(rF,first);
-    Pair<E> p=new Pair<>();
-    
-  //  p.first(rF);
-   
-    
-    
-    return p;
+		Node<E> next= first.getNext();
+    if  (next==null) {
+    	Pair<Node<E>> p=new Pair<>(first,first);
+    	this.first=first;
+    	return p;
+    } 
+    else {
+    	Pair<Node<E>> x = recReverse(next);
+    	x.second().setNext(first);
+    	first.setNext(null);
+    	x.setSecond(first);
+    	return x;
+    }
 }
 
 public ArrayList<E> lessThan(E e) { 
